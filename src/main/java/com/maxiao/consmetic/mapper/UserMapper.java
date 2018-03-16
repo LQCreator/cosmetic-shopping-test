@@ -1,7 +1,9 @@
 package com.maxiao.consmetic.mapper;
 
-/**
- * Created by ling on 2018/3/16.
- */
-public class UserMapper {
+import com.maxiao.consmetic.domain.User;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserMapper {
+    User queryUser(String userId);
 }
