@@ -1,7 +1,10 @@
 package com.maxiao.cosmetic.controller;
 
+import com.maxiao.cosmetic.domain.bo.cosmeticuser.UserBo;
 import com.maxiao.cosmetic.domain.condition.cosmeticuser.UserCondition;
+import com.maxiao.cosmetic.domain.exception.CosmeticException;
 import com.maxiao.cosmetic.domain.form.cosmeticuser.UserCreateForm;
+import com.maxiao.cosmetic.domain.form.cosmeticuser.UserLoginForm;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserLoginPo;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserPo;
 import com.maxiao.cosmetic.domain.response.ResponseEntity;
@@ -40,7 +43,8 @@ public class OauthController extends BaseController {
         }
 
         String userId = userService.getUserId();
-        UserPo userPo =  CopyUtil.transfer(userCreateForm, UserPo.class);;
+        UserPo userPo = CopyUtil.transfer(userCreateForm, UserPo.class);
+
         userPo.setUserId(userId);
         userPo.setUserName(userCreateForm.getUserName());
 
@@ -53,5 +57,38 @@ public class OauthController extends BaseController {
         userService.insertPUser(userPo, userLoginPo);
         UserVo vo = CopyUtil.transfer(userPo, UserVo.class);
         return getSuccessResult(vo);
+    }
+
+
+    @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
+    @RequestMapping(value = "/userLogin", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody
+    ResponseEntity<Object> userLogin(@ModelAttribute UserLoginForm userLoginForm) {
+        UserCondition userCondition = new UserCondition();
+        userCondition.setPhone(userLoginForm.getPhone());
+
+        int count = userService.queryCount(userCondition);
+        if (count < 0) {
+            return this.getFailResult(201, "不存在该手机号码");
+        }
+
+        userCondition.setPassword(userLoginForm.getPassword());
+        count = userService.queryCount(userCondition);
+        if (count < 0) {
+            return this.getFailResult(201, "请输入正确的密码");
+        }
+
+        userCondition.setLoginType(2);
+        UserBo userBo = null;
+        try {
+            userBo = userService.loginUser(userCondition);
+        } catch (CosmeticException e) {
+            e.printStackTrace();
+        }
+
+        UserVo vo = CopyUtil.transfer(userBo, UserVo.class);
+        return getSuccessResult(vo);
+
+
     }
 }

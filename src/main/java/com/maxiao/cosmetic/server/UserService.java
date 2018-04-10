@@ -1,5 +1,6 @@
 package com.maxiao.cosmetic.server;
 
+import com.maxiao.cosmetic.domain.bo.cosmeticuser.UserBo;
 import com.maxiao.cosmetic.domain.condition.cosmeticuser.UserCondition;
 import com.maxiao.cosmetic.domain.exception.CosmeticException;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserLoginPo;
@@ -26,6 +27,12 @@ public interface UserService {
      * @return
      */
     void insertPUser(UserPo userPo, UserLoginPo userLoginPo);
+
+    /**
+     * 前端登录
+     * @return
+     */
+    UserBo loginUser(UserCondition userCondition) throws CosmeticException;
 
 }
 

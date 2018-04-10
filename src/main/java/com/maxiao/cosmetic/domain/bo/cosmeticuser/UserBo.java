@@ -1,23 +1,24 @@
-package com.maxiao.cosmetic.domain.condition.cosmeticuser;
+package com.maxiao.cosmetic.domain.bo.cosmeticuser;
 
 import lombok.Data;
 
 @Data
-public class UserCondition {
+public class UserBo {
+
     /**
      * 用户编号
      */
     private String userId;
 
     /**
-     * 用户电话
-     */
-    private String phone;
-
-    /**
      * 用户姓名
      */
     private String userName;
+
+    /**
+     * 用户电话
+     */
+    private String phone;
 
     /**
      * 密码

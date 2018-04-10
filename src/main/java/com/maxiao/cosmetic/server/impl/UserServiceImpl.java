@@ -1,6 +1,8 @@
 package com.maxiao.cosmetic.server.impl;
 
+import com.maxiao.cosmetic.domain.bo.cosmeticuser.UserBo;
 import com.maxiao.cosmetic.domain.condition.cosmeticuser.UserCondition;
+import com.maxiao.cosmetic.domain.exception.CosmeticException;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserLoginPo;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserPo;
 import com.maxiao.cosmetic.mapper.UserMapper;
@@ -29,6 +31,11 @@ public class UserServiceImpl implements UserService {
     public void insertPUser(UserPo userPo, UserLoginPo userLoginPo) {
         userMapper.insertUser(userPo);
         userMapper.insertLogin(userLoginPo);
+    }
+
+    @Override
+    public UserBo loginUser(UserCondition userCondition) throws CosmeticException {
+        return userMapper.queryUserInfo(userCondition);
     }
 
 

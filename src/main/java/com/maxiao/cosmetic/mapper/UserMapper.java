@@ -1,5 +1,6 @@
 package com.maxiao.cosmetic.mapper;
 
+import com.maxiao.cosmetic.domain.bo.cosmeticuser.UserBo;
 import com.maxiao.cosmetic.domain.condition.cosmeticuser.UserCondition;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserLoginPo;
 import com.maxiao.cosmetic.domain.po.cosmeticuser.UserPo;
@@ -35,5 +36,12 @@ public interface UserMapper {
      * @param userLoginPo
      */
     void insertLogin(UserLoginPo userLoginPo);
+
+    /**
+     * 查询用户信息
+     * @param userCondition
+     * @return
+     */
+    UserBo queryUserInfo(UserCondition userCondition);
 
 }
