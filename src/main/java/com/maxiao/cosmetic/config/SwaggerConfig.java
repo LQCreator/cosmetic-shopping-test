@@ -1,4 +1,4 @@
-package com.maxiao.consmetic.config;
+package com.maxiao.cosmetic.config;
 
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-@ComponentScan("com.maxiao.consmetic")
+@ComponentScan("com.maxiao.cosmetic")
 public class SwaggerConfig {
     @Bean
     public Docket createAPI() {

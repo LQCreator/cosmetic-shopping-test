@@ -1,11 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.maxiao.consmetic.mapper.UserMapper">
-    <resultMap id="User" type="com.maxiao.consmetic.domain.User">
+<mapper namespace="com.maxiao.cosmetic.mapper.UserMapper">
+    <resultMap id="User" type="com.maxiao.cosmetic.domain.po.cosmeticuser.UserPo">
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="queryUser" parameterType="String" resultMap="User">
-      SELECT * FROM tb_cosmetic_user t WHERE t.user_id =#{userId,jdbcType=VARCHAR}
+
+    <sql id="whereSql">
+        <if test="userId != null and userId != ''">
+            AND t.user_id = #{userId,jdbcType = VARCHAR}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND t.user_name = #{userName,jdbcType = VARCHAR}
+        </if>
+    </sql>
+
+    <select id="getUserId" resultType="String">
+        SELECT concat('P',LPAD(nextval('user_seq'),8,0)) from dual
     </select>
+
+
+    <select id="count" parameterType="com.maxiao.cosmetic.domain.condition.cosmeticuser.UserCondition"
+            resultType="Integer">
+        SELECT
+        count(1)
+        FROM tb_cosmetic_user t
+        LEFT JOIN tb_cosmetic_login l
+        ON t.user_id = l.user_id
+        WHERE 1=1
+        <include refid="whereSql"/>
+        <if test="phone != null and phone != ''">
+            AND l.phone = #{phone,jdbcType = VARCHAR}
+        </if>
+    </select>
+
+    <insert id="insertUser" parameterType="com.maxiao.cosmetic.domain.po.cosmeticuser.UserPo">
+        INSERT INTO tb_cosmetic_user(
+        user_id
+        <if test="userName != null and userName != ''">
+            ,user_name
+        </if>
+        )
+        VALUES(
+        #{userId,jdbcType=VARCHAR}
+        <if test="userName != null and userName != ''">
+            ,#{userName,jdbcType=VARCHAR}
+        </if>
+        )
+    </insert>
+
+    <insert id="insertLogin" parameterType="com.maxiao.cosmetic.domain.po.cosmeticuser.UserLoginPo">
+        INSERT INTO tb_cosmetic_login(
+        user_id
+        <if test="phone != null and phone != ''">
+            ,phone
+        </if>
+        <if test="loginType != null and loginType != ''">
+            ,login_type
+        </if>
+        <if test="password != null and password != ''">
+            ,password
+        </if>
+        )
+        VALUES(
+        #{userId,jdbcType=VARCHAR}
+        <if test="phone != null and phone != ''">
+            ,#{phone,jdbcType=VARCHAR}
+        </if>
+        <if test="loginType != null and loginType != ''">
+            ,#{loginType,jdbcType=INTEGER}
+        </if>
+        <if test="password != null and password != ''">
+            ,#{password,jdbcType=INTEGER}
+        </if>
+        )
+    </insert>
+
 </mapper>

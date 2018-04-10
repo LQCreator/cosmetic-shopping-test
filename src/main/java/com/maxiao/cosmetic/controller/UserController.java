@@ -1,7 +1,6 @@
-package com.maxiao.consmetic.controller;
+package com.maxiao.cosmetic.controller;
 
-import com.maxiao.consmetic.domain.User;
-import com.maxiao.consmetic.server.UserService;
+import com.maxiao.cosmetic.server.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ public class UserController {
     @ApiOperation(value = "查询用户",notes = "查询用户",httpMethod = "GET")
     @RequestMapping(value = "/queryUser", method = {RequestMethod.POST, RequestMethod.GET})
     public void queryUser(@RequestParam String userId) {
-        User user = userService.queryUser(userId);
-        System.out.print(user);
+
     }
 }
